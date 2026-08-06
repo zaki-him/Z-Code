@@ -2,6 +2,7 @@ import "dotenv/config"
 
 import { callModel } from "./llm.js";
 import OpenAI from "openai";
+import { error } from "node:console";
 
 
 
@@ -10,8 +11,13 @@ async function main() {
         { role: "user", "content": "hello, what model you are" }
     ] 
 
-    const response = await callModel(messages)
-    console.log(JSON.stringify(response, null, 2));
+    try {
+        const response = await callModel(messages)
+        console.log(JSON.stringify(response, null, 2));
+    } catch (err) {
+        if (err instanceof Error) 
+            console.error("Error calling the model: ", err.message)
+    }
 }
 
 main()
