@@ -2,8 +2,6 @@ import "dotenv/config"
 
 import { callModel } from "./llm.js";
 import OpenAI from "openai";
-import { error } from "node:console";
-
 
 
 async function main() {
