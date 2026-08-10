@@ -4,5 +4,4 @@ export type AgentState = {
     status: "done" | "running" | "error";
     turnCount: number;
     history: ChatCompletionMessageParam[]
-
 }

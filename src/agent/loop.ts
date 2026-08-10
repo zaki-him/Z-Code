@@ -14,7 +14,14 @@ export const excuteToolCall = async (toolName: string, args: any): Promise<ToolR
         }
     }
 
-    return await tool.execute(args)
+    try {
+        return await tool.execute(args)
+    } catch (error) {
+        return {
+            success: false,
+            content: `tool '${toolName}' threw an unexpected error: ${error instanceof Error ? error.message : "unknown"}`
+        }
+    }
 }
 
 export const runLoop = async (state: AgentState) => {
