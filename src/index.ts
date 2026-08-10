@@ -11,7 +11,7 @@ async function main() {
 
     try {
         const response = await callModel(messages)
-        console.log(JSON.stringify(response, null, 2));
+        console.log(JSON.stringify(response.choices[0].message.tool_calls, null, 2));
     } catch (err) {
         if (err instanceof Error) 
             console.error("Error calling the model: ", err.message)

@@ -2,5 +2,9 @@ import { readFileTool } from "./read_file.js";
 import type { Tool } from "./types.js";
 
 const tools: Record<string, Tool> = {
-    readFile: readFileTool
+    read_file: readFileTool
+}
+
+export const getToolByName = (name: string): Tool | undefined => {
+    return tools[name]
 }
