@@ -1,5 +1,5 @@
 import { callModel } from "../llm.js";
-import { getToolByName } from "../tools/registry.js";
+import { getAllToolSchemas, getToolByName } from "../tools/registry.js";
 import type { ToolResult } from "../tools/types.js";
 import { MAX_TURN_COUNT } from "../utils.js";
 import type { AgentState } from "./types.js";
@@ -32,7 +32,7 @@ export const runLoop = async (state: AgentState) => {
         }
 
         
-        const response = await callModel(state.history)
+        const response = await callModel(state.history, getAllToolSchemas())
         state.turnCount++
 
         const message = response.choices[0]?.message

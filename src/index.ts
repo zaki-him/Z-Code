@@ -1,21 +1,18 @@
 import "dotenv/config"
 
-import { callModel } from "./llm.js";
-import OpenAI from "openai";
+import type { AgentState } from "./agent/types.js";
+import { runLoop } from "./agent/loop.js";
 
 
 async function main() {
-    const messages: OpenAI.ChatCompletionMessageParam[] = [
-        { role: "user", "content": "hello, what model you are" }
-    ] 
-
-    try {
-        const response = await callModel(messages)
-        console.log(JSON.stringify(response.choices[0].message.tool_calls, null, 2));
-    } catch (err) {
-        if (err instanceof Error) 
-            console.error("Error calling the model: ", err.message)
+    const dummyTest: AgentState = {
+        status: "running",
+        turnCount: 0,
+        history: [{ role: "user", content: "Read package.json file and tell me what dependencies it has?" }]
     }
+
+    await runLoop(dummyTest)
+    console.log(dummyTest)
 }
 
 main()

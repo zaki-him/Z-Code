@@ -11,7 +11,7 @@ type ToolParameters = {
   required: string[];
 };
 
-type ToolSchema = {
+export type ToolSchema = {
   type: "function";
   function: {
     name: string;
