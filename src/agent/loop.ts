@@ -65,7 +65,7 @@ export const runLoop = async (state: AgentState) => {
                 state.history.push({
                     role: "tool",
                     tool_call_id: toolCall.id,
-                    content: JSON.stringify(toolResult)
+                    content: toolResult.content
                 })
             }
         } else if (message?.content && message.content.trim().length > 0) {
