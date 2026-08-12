@@ -1,4 +1,4 @@
-import { isPathInsideProjectRoot, PROJECT_ROOT } from "../utils.js"
+import { resolveProjectPath, PROJECT_ROOT } from "../utils.js"
 import fs from "fs/promises"
 import type { ToolResult, Tool } from "./types.js"
 
@@ -22,7 +22,8 @@ export const readFileTool: Tool = {
     }
   },
   execute: async (args: any): Promise<ToolResult> => {
-    if (!isPathInsideProjectRoot(args.path)) {
+    const resolvedPath = resolveProjectPath(args.path);
+    if (!resolvedPath) {
         return {
             success: false,
             content: "Access denied: File path is outside the project root."
