@@ -105,7 +105,7 @@ export const editFileTool: Tool = {
 
         return {
             success: true,
-            content: `Succesfully edited ${args.path}`
+            content: `Successfully edited ${args.path}`
         }
     }
 }
