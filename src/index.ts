@@ -8,7 +8,7 @@ async function main() {
     const dummyTest: AgentState = {
         status: "running",
         turnCount: 0,
-        history: [{ role: "user", content: "Create a file named 'test.txt' telling the user to do something. It should be inside a folder named 'test" }]
+        history: [{ role: "user", content: "Use the edit_file tool to change 'hello world' to 'hello user' in tmp/example.ts" }]
     }
 
     await runLoop(dummyTest)
