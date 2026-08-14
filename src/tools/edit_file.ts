@@ -29,6 +29,11 @@ export const editFileTool: Tool = {
             }
         }
     },
+    usageNotes: {
+        whenToUse: "Use to make small, targeted changes to a specific part of an existing file while preserving the rest of its content.",
+        commonMistakes: "Passing an empty old_string, passing the same value for old_string and new_string, or passing an old_string that appears multiple times in the file — all three are rejected.",
+        recoveryHints: "If the string is not found, re-read the file to confirm the exact content, spacing, and indentation before retrying."
+    },
     execute: async (args: any): Promise<ToolResult> => {
         const resolvedPath = resolveProjectPath(args.path);
         if (!resolvedPath) {
