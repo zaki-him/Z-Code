@@ -1,5 +1,5 @@
 import { getAllTools } from "../tools/registry.js"
-import type { Tool, ToolUsageNotes } from "../tools/types.js"
+import type { Tool } from "../tools/types.js"
 
 
 const formatToolUsageNotes = (tool: Tool) => {
@@ -14,7 +14,7 @@ const formatToolUsageNotes = (tool: Tool) => {
 
 const buildSystemPrompt = () => {
     const tools = getAllTools()
-    let systemPrompt = "You are ZCode, an AI Coding Assistant\n\n**Available tools:** \n\n"
+    let systemPrompt = `You are ZCode, an AI Coding Assistant.`
 
     for(const usageNotes of tools) {
         const { name , lines: formatedUsageNotes} = formatToolUsageNotes(usageNotes)
@@ -27,5 +27,3 @@ const buildSystemPrompt = () => {
 
 
 export const systemPrompt = buildSystemPrompt()
-
-console.log(systemPrompt)

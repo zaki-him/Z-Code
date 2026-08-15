@@ -2,6 +2,7 @@ import { callModel } from "../llm.js";
 import { getAllToolSchemas, getToolByName } from "../tools/registry.js";
 import type { ToolResult } from "../tools/types.js";
 import { MAX_TURN_COUNT } from "../utils.js";
+import { systemPrompt } from "./prompts.js";
 import type { AgentState } from "./types.js";
 
 export const excuteToolCall = async (toolName: string, args: any): Promise<ToolResult> => {
@@ -74,6 +75,6 @@ export const runLoop = async (state: AgentState) => {
         } else {
             console.warn("Empty response with no tool call — model may be stuck.")
             state.status = "error"
-    }
+        }
     }
 }
