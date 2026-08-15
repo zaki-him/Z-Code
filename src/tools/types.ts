@@ -11,7 +11,7 @@ type ToolParameters = {
   required: string[];
 };
 
-type ToolUsageNotes = {
+export type ToolUsageNotes = {
   whenToUse: string;
   commonMistakes?: string;
   recoveryHints?: string;
