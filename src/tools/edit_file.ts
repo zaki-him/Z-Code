@@ -29,6 +29,11 @@ export const editFileTool: Tool = {
             }
         }
     },
+    usageNotes: {
+        whenToUse: "Use to modify or make small, targeted changes to a specific part of an existing file while preserving the rest of its content. If the file does not exist, use the `write_file` tool to create it first.",
+        commonMistakes: "Passing an empty old_string, passing the same value for old_string and new_string, or passing an old_string that appears multiple times in the file — all three are rejected.",
+        recoveryHints: "If the string is not found, re-read the file to confirm the exact content, spacing, and indentation before retrying. If the file itself is not found (not just the string), the file doesn't exist yet — use write_file to create it."
+    },
     execute: async (args: any): Promise<ToolResult> => {
         const resolvedPath = resolveProjectPath(args.path);
         if (!resolvedPath) {

@@ -11,6 +11,13 @@ type ToolParameters = {
   required: string[];
 };
 
+export type ToolUsageNotes = {
+  whenToUse: string;
+  commonMistakes?: string;
+  recoveryHints?: string;
+  extraGuidance?: string;
+}
+
 export type ToolSchema = {
   type: "function";
   function: {
@@ -27,5 +34,6 @@ export type ToolResult = {
 
 export type Tool = {
   schema: ToolSchema;
+  usageNotes: ToolUsageNotes;
   execute: (args: any) => Promise<ToolResult>;
 };

@@ -21,6 +21,11 @@ export const readFileTool: Tool = {
       }
     }
   },
+  usageNotes: {
+    whenToUse: "Use to read a file's full contents before editing, analyzing, or verifying changes.",
+    commonMistakes: "Passing an absolute path or a leading slash. The path must be relative to the project root.",
+    recoveryHints: "If the file is not found, verify the exact relative path and file extension before retrying."
+  },
   execute: async (args: any): Promise<ToolResult> => {
     const resolvedPath = resolveProjectPath(args.path);
     if (!resolvedPath) {

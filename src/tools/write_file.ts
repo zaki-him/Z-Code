@@ -25,6 +25,11 @@ export const writeFileTool: Tool = {
             }
         }
     },
+    usageNotes: {
+        whenToUse: "Use to create a new file or completely replace an existing file's contents.",
+        commonMistakes: "Using write_file for small targeted changes. It overwrites the entire file — use edit_file instead.",
+        extraGuidance: "Parent directories are created automatically if they don't exist. Any existing content in the file is fully overwritten."
+    },
     execute: async (args: any): Promise<ToolResult> => {
         const resolvedPath = resolveProjectPath(args.path);
         if (!resolvedPath){
