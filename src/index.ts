@@ -17,10 +17,19 @@ async function main() {
     rl.on("line", async (line: string) => {
         const input = line.trim()
 
+        if(input === "/exit") {
+            process.exit(0)
+        }
+
         state.history.push({ role: "user", content: input })
 
         await runLoop(state)
-        console.log(state)
+        
+        if(state.status === "done") {
+            const lastMessage = state.history[state.history.length - 1]?.content
+            console.log(lastMessage)
+        }
+        
         
         rl.prompt()
     })
