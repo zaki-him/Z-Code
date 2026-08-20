@@ -2,7 +2,7 @@ import { callModel } from "../llm.js";
 import { getAllToolSchemas, getToolByName } from "../tools/registry.js";
 import type { ToolResult } from "../tools/types.js";
 import { MAX_TURN_COUNT } from "../utils.js";
-import { systemPrompt } from "./prompts.js";
+import { resetTurn } from "./state.js";
 import type { AgentState } from "./types.js";
 
 export const excuteToolCall = async (toolName: string, args: any): Promise<ToolResult> => {
@@ -26,6 +26,7 @@ export const excuteToolCall = async (toolName: string, args: any): Promise<ToolR
 }
 
 export const runLoop = async (state: AgentState) => {
+    resetTurn(state)
     while (state.status === "running") {
         if (state.turnCount >= MAX_TURN_COUNT) {
             state.status = "error"

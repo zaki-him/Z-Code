@@ -10,3 +10,8 @@ export const createAgentState = (): AgentState => {
     
     return state
 }
+
+export const resetTurn = (state: AgentState) => {
+    state.turnCount = 0
+    state.status = "running"
+}

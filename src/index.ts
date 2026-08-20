@@ -1,18 +1,33 @@
 import "dotenv/config"
-
-import type { AgentState } from "./agent/types.js";
+import * as readline from "node:readline"
+import { createAgentState } from "./agent/state.js";
 import { runLoop } from "./agent/loop.js";
 
 
 async function main() {
-    const dummyTest: AgentState = {
-        status: "running",
-        turnCount: 0,
-        history: [{ role: "user", content: "changed my mind i want test.txt file to have a hello" }]
-    }
+    const state = createAgentState()
+    const rl = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout,
+        prompt: "> "
+    })
 
-    await runLoop(dummyTest)
-    console.log(dummyTest)
+    rl.prompt()
+
+    rl.on("line", async (line: string) => {
+        const input = line.trim()
+
+        state.history.push({ role: "user", content: input })
+
+        await runLoop(state)
+        console.log(state)
+        
+        rl.prompt()
+    })
+
+    rl.on("close", () => {
+        process.exit(0)
+    })
 }
 
 main()
