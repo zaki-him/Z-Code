@@ -3,7 +3,7 @@ import { getAllToolSchemas, getToolByName } from "../tools/registry.js";
 import type { ToolResult } from "../tools/types.js";
 import { MAX_TURN_COUNT } from "../utils.js";
 import { resetTurn } from "./state.js";
-import type { AgentState } from "./types.js";
+import type { AgentEvent, AgentState } from "./types.js";
 
 export const excuteToolCall = async (toolName: string, args: any): Promise<ToolResult> => {
     const tool = getToolByName(toolName)
@@ -25,14 +25,19 @@ export const excuteToolCall = async (toolName: string, args: any): Promise<ToolR
     }
 }
 
-export const runLoop = async (state: AgentState) => {
+export const runLoop = async (
+    state: AgentState,
+    onEvent?: (event: AgentEvent) => void
+) => {
     resetTurn(state)
     while (state.status === "running") {
         if (state.turnCount >= MAX_TURN_COUNT) {
             state.status = "error"
+            onEvent?.({type: "error", reason: "Time limit exceeded"})
             break
         }
 
+        onEvent?.({ type: "thinking" })
         
         const response = await callModel(state.history, getAllToolSchemas())
         state.turnCount++
@@ -59,8 +64,12 @@ export const runLoop = async (state: AgentState) => {
                         tool_call_id: toolCall.id,
                         content: JSON.stringify(toolResult)
                     })
+                    onEvent?.({ type: "error", reason: `Bad arguments for '${toolCall.function.name}'.` })
                     continue
                 }
+
+
+                onEvent?.({ type: "tool_call_start", toolName: toolCall.function.name, args })
 
                 const toolResult = await excuteToolCall(toolCall.function.name, args)
 
@@ -69,13 +78,17 @@ export const runLoop = async (state: AgentState) => {
                     tool_call_id: toolCall.id,
                     content: toolResult.content
                 })
+
+                onEvent?.({ type: "tool_call_end", toolName: toolCall.function.name, result: toolResult })
             }
         } else if (message?.content && message.content.trim().length > 0) {
             state.history.push(message)
             state.status = "done"
+            onEvent?.({ type: "assistant_message", content: message.content })
         } else {
             console.warn("Empty response with no tool call — model may be stuck.")
             state.status = "error"
+            onEvent?.({ type: "error", reason: "Model returned an empty response." })
         }
     }
 }
